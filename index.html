@@ -9,68 +9,31 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        body { 
-            margin: 0; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #fff0f3; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100vh; 
-            text-align: center; 
-            overflow: hidden;
-        }
+        body { margin: 0; font-family: sans-serif; background-color: #fff0f3; display: flex; align-items: center; justify-content: center; height: 100vh; text-align: center; overflow: hidden; }
         .container { padding: 20px; z-index: 1; }
-        button { 
-            cursor: pointer; 
-            border-radius: 12px; 
-            border: none; 
-            color: white; 
-            margin: 10px; 
-            padding: 12px 24px; 
-            font-weight: bold;
-            transition: 0.3s; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+        button { cursor: pointer; border-radius: 12px; border: none; color: white; margin: 10px; padding: 12px 24px; font-weight: bold; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .btn-yes { background-color: #28a745; }
         .btn-no { background-color: #dc3545; }
-        h1 { color: #d63384; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
+        h1 { color: #d63384; }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <audio id="bgMusic" loop>
-        <source src="https://raw.githubusercontent.com/LInh-04/music-storage/main/my-love-mine-all-mine.mp3" type="audio/mpeg">
+        <source src="https://files.catbox.moe/978m8m.mp3" type="audio/mpeg">
     </audio>
 
     <script type="text/babel">
-        const NO_PHRASES = [
-            "Không đâu 💔",
-            "Chinh ơi, đừng giận anh nữa mà... 🥺",
-            "Anh biết lỗi với Chinh rồi! 💕",
-            "Một cơ hội cuối thôi mà Chinh ơi?",
-            "Đừng làm tim anh tan vỡ, Chinh nhé :(",
-            "Chinh suy nghĩ lại đi mà...",
-            "Chinh mà cứ thế này là anh khóc thật đấy!"
-        ];
+        const NO_PHRASES = ["Không đâu 💔", "Chinh ơi, đừng giận anh nữa mà... 🥺", "Anh biết lỗi với Chinh rồi! 💕", "Một cơ hội cuối thôi mà Chinh ơi?", "Đừng làm tim anh tan vỡ, Chinh nhé :(", "Chinh suy nghĩ lại đi mà...", "Chinh mà cứ thế này là anh khóc thật đấy!"];
 
         function App() {
             const [noClicks, setNoClicks] = React.useState(0);
             const [isForgiven, setIsForgiven] = React.useState(false);
-            const audioRef = React.useRef(null);
-
-            React.useEffect(() => {
-                audioRef.current = document.getElementById("bgMusic");
-                if (audioRef.current) {
-                    audioRef.current.volume = 0.5; // Âm lượng vừa phải
-                }
-            }, []);
 
             const playMusic = () => {
-                if (audioRef.current) {
-                    audioRef.current.play().catch(e => console.log("Chờ tương tác để phát nhạc"));
-                }
+                const audio = document.getElementById("bgMusic");
+                if (audio) { audio.play().catch(() => {}); }
             };
 
             const handleNo = () => {
@@ -81,18 +44,7 @@
             const handleYes = () => {
                 setIsForgiven(true);
                 playMusic();
-                
-                // Hiệu ứng pháo hoa trái tim
-                const duration = 5 * 1000;
-                const animationEnd = Date.now() + duration;
-                const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-                const interval = setInterval(function() {
-                    const timeLeft = animationEnd - Date.now();
-                    if (timeLeft <= 0) return clearInterval(interval);
-                    const particleCount = 50 * (timeLeft / duration);
-                    confetti({ ...defaults, particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 }, shapes: ['heart'], colors: ['#ff4d6d', '#ff758f', '#ffb3c1'] });
-                }, 250);
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ffb3c1'] });
             };
 
             const yesButtonSize = (noClicks * 20) + 18;
@@ -102,7 +54,6 @@
                     <div className="container">
                         <img src="https://media.tenor.com/f1xnRxTRxLAAAAAj/bears-with-kisses-bg.gif" width="200" />
                         <h1 style={{ color: "#ff4d6d", fontSize: "40px" }}>Yêu Chinh nhất trên đời! 💖🎉</h1>
-                        <p style={{ color: "#555" }}>Cảm ơn Chinh đã hết giận anh nhé!</p>
                     </div>
                 );
             }
@@ -111,28 +62,16 @@
                 <div className="container">
                     <img src="https://media.tenor.com/VIChDQ6ejRQAAAAj/jumping-bear-hearts-no-png.gif" width="200" />
                     <h1>Chinh ơi đừng giận anh nữa mà 💘</h1>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <button 
-                            className="btn-yes"
-                            onClick={handleYes} 
-                            style={{ fontSize: `${yesButtonSize}px` }}
-                        >
-                            Hết giận rùi
-                        </button>
-                        <button 
-                            className="btn-no"
-                            onClick={handleNo} 
-                            style={{ fontSize: "18px" }}
-                        >
+                    <div>
+                        <button className="btn-yes" onClick={handleYes} style={{ fontSize: `${yesButtonSize}px` }}>Hết giận rùi</button>
+                        <button className="btn-no" onClick={handleNo} style={{ fontSize: "18px" }}>
                             {noClicks === 0 ? "Không" : NO_PHRASES[Math.min(noClicks - 1, NO_PHRASES.length - 1)]}
                         </button>
                     </div>
                 </div>
             );
         }
-
-        const root = ReactDOM.createRoot(document.getElementById("root"));
-        root.render(<App />);
+        ReactDOM.createRoot(document.getElementById("root")).render(<App />);
     </script>
 </body>
 </html>

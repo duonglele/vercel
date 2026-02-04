@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xin lỗi Chinh iu</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body { 
+            margin: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #fff0f3; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            text-align: center; 
+        }
+        .container { padding: 20px; }
+        button { 
+            cursor: pointer; 
+            border-radius: 8px; 
+            border: none; 
+            color: white; 
+            margin: 10px; 
+            padding: 12px 24px; 
+            font-weight: bold;
+            transition: 0.2s; 
+        }
+        .btn-yes { backgroundColor: #28a745; }
+        .btn-no { backgroundColor: #dc3545; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const NO_PHRASES = [
+            "Không đâu 💔",
+            "Chinh ơi, đừng giận anh nữa mà... 🥺",
+            "Anh biết lỗi với Chinh rồi! 💕",
+            "Một cơ hội cuối thôi mà Chinh ơi?",
+            "Đừng làm tim anh tan vỡ, Chinh nhé :(",
+            "Chinh suy nghĩ lại đi mà...",
+            "Chinh mà cứ thế này là anh khóc thật đấy!"
+        ];
+
+        function App() {
+            const [noClicks, setNoClicks] = React.useState(0);
+            const [isForgiven, setIsForgiven] = React.useState(false);
+
+            const yesButtonSize = (noClicks * 20) + 18;
+
+            if (isForgiven) {
+                return (
+                    <div className="container">
+                        <img src="https://media.tenor.com/f1xnRxTRxLAAAAAj/bears-with-kisses-bg.gif" width="200" />
+                        <h1 style={{ color: "#ff4d6d", fontSize: "40px" }}>Yêu Chinh nhất trên đời! 💖🎉</h1>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="container">
+                    <img src="https://media.tenor.com/VIChDQ6ejRQAAAAj/jumping-bear-hearts-no-png.gif" width="200" />
+                    <h1 style={{ color: "#d63384" }}>Chinh ơi đừng giận anh nữa mà 💘</h1>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <button 
+                            onClick={() => setIsForgiven(true)} 
+                            style={{ fontSize: `${yesButtonSize}px`, backgroundColor: "#28a745" }}
+                        >
+                            Hết giận rùi
+                        </button>
+                        <button 
+                            onClick={() => setNoClicks(noClicks + 1)} 
+                            style={{ fontSize: "18px", backgroundColor: "#dc3545" }}
+                        >
+                            {noClicks === 0 ? "Không" : NO_PHRASES[Math.min(noClicks - 1, NO_PHRASES.length - 1)]}
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<App />);
+    </script>
+</body>
+</html>
